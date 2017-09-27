@@ -60,3 +60,22 @@ koa2 学习
 
       17）.
  
+4.koa 支持es6语法
+   1).使用babel
+      由于babel-core 只支持es6基础语法，而新的API类似set等，则需要babel-polyfill 
+
+   2).安装包
+      npm install babel-core --save
+      npm install babel-polyfill --save
+ 
+   3).配置babelrc  touch .babelrc  创建babel配置文件
+       npm install babel-preset-es2015 --save
+       npm install babel-preset-stage-2 --save
+       {
+          "presets":["es2015","stage-2"]
+       }
+
+    4).app.js
+       require('babel-core/register')
+       require('babel-polyfill')
+       require('./server')
