@@ -46,3 +46,7 @@
       await next();
     });
    app.use(bodyparser());
+4.bodyparser： post 必须请求header中添加Content-Type:application/json
+   解析请求数据为json 对象到
+   get请求：ctx.request.query 中{ }
+   post请求：ctx.request.body 中{ }  如果body为空，检查请求链接中header是否有Content-Type:application/json
