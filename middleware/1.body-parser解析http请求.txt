@@ -1,0 +1,52 @@
+1.安装
+  npm i koa-bodyparser --save
+
+2.使用
+  import BodyParser from 'koa-bodyparser'
+  app.use(BodyParser(options))
+
+3.options:
+  1) enableTypes: parser will only parse when request type hits enableTypes, default is ['json', 'form'].
+
+  2) encode: requested encoding. Default is utf-8 by co-body.
+
+  3) formLimit: limit of the urlencoded body. If the body ends up being larger than this limit, a 413 error code is returned. Default is 56kb.
+  
+  4) jsonLimit: limit of the json body. Default is 1mb.
+
+  5) textLimit: limit of the text body. Default is 1mb.
+
+  6) strict: when set to true, JSON parser will only accept arrays and objects. Default is true. See strict mode in co-body. In strict mode, ctx.request.body will always be an object(or array), this avoid lots of type judging. But text body will always return string type.
+
+  7) detectJSON: custom json request detect function. Default is null.
+
+       app.use(bodyparser({
+  	 detectJSON: function (ctx) {
+    		return /\.json$/i.test(ctx.path);
+  	  }
+       }));
+  8) extendTypes: support extend types:
+
+    app.use(bodyparser({
+ 	 extendTypes: {
+    		json: ['application/x-javascript'] // will parse application/x-javascript type body as a JSON string
+  	}
+    }));
+  9) onerror: support custom error handle, if koa-bodyparser throw an error, you can customize the response like:
+
+	app.use(bodyparser({
+	  onerror: function (err, ctx) {
+	    ctx.throw('body parse error', 422);
+	  }
+	}));
+  10) disableBodyParser: you can dynamic disable body parser by set ctx.disableBodyParser = true.
+
+    app.use(async (ctx, next) => {
+      if (ctx.path === '/disable') ctx.disableBodyParser = true;
+      await next();
+    });
+   app.use(bodyparser());
+4.bodyparser： post 必须请求header中添加Content-Type:application/json
+   解析请求数据为json 对象到
+   get请求：ctx.request.query 中{ }
+   post请求：ctx.request.body 中{ }  如果body为空，检查请求链接中header是否有Content-Type:application/json
