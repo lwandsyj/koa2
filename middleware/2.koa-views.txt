@@ -1,0 +1,36 @@
+1.模板引擎koa-views 
+  import views from 'koa-views'
+
+2.使用
+  app.use(views(path.join(__dirname,'./views'),{
+    extension:'hbs',
+    map: { hbs: 'handlebars' },
+  }));
+  view(path,options)
+  path:模板路径目录，绝对路径
+  options：
+     extension:'hbs', 模板文件后缀名
+     map: { hbs: 'handlebars' },模板引擎
+     options:
+   views(__dirname, {
+    map: { hbs: 'handlebars' },
+    options: {
+      helpers: {
+        uppercase: (str) => str.toUpperCase()
+      },
+ 
+      partials: {
+        subTitle: './my-partial' // requires ./my-partial.hbs
+      }
+    }
+  })
+  
+3.会添加一个render方法到ctx上
+  router.get('/hello',async (ctx)=>{
+    console.log(ctx.state)
+    return ctx.render('hello')
+   });
+4.render(view,local)
+  view: 要显示的页面
+  local:传递给页面的数据
+5.ctx.state  ：全局传给页面的数据
